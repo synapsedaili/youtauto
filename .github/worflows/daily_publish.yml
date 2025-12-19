@@ -1,0 +1,69 @@
+name: 🌐 Daily Dual Publish (16:00 TR)
+
+on:
+  schedule:
+    - cron: '0 13 * * *'  # 13:00 UTC = 16:00 TR saati
+  workflow_dispatch:
+
+jobs:
+  shorts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create directories
+        run: mkdir -p models temp output
+      - name: Set PYTHONPATH        
+        run: echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - run: pip install -r requirements.txt
+      - run: sudo apt-get install -y ffmpeg libgl1 libx264-dev
+      - name: Cache models
+        uses: actions/cache@v3
+        with:
+          path: models/
+          key: coqui-models-v1
+      - run: python src/create_shorts.py
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          YOUTUBE_CREDENTIALS: ${{ secrets.YOUTUBE_CREDENTIALS }} 
+
+
+  podcast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create directories
+        run: mkdir -p models temp output
+        name: Set PYTHONPATH
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg libgl1 libglib2.0-0 libx264-dev
+      
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+      
+      - name: Cache Coqui models
+        uses: actions/cache@v3
+        with:
+          path: models/
+          key: coqui-models-v1-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            coqui-models-v1-
+      
+      - name: Run podcast pipeline
+        run: python src/create_podcast.py
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          YOUTUBE_CREDENTIALS: ${{ secrets.YOUTUBE_CREDENTIALS }}
