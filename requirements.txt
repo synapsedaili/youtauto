@@ -1,0 +1,23 @@
+# Core
+requests
+python-dotenv
+
+# AI & Script Generation
+transformers
+torch==2.1.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+tokenizers
+
+# TTS (Ses üretimi)
+gTTS==2.5.1
+
+# Video üretimi
+moviepy==1.0.3
+Pillow
+
+# YouTube API
+google-api-python-client
+google-auth-oauthlib
+google-auth-httplib2
+
+# Yardımcı
+python-slugify
