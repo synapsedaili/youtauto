@@ -1,0 +1,22 @@
+# Core
+requests
+python-dotenv
+
+# AI & TTS
+huggingface_hub
+torch==2.1.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+torchvision==0.16.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+torchaudio==2.1.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+TTS==0.22.0
+
+# Video
+moviepy==1.0.3
+Pillow
+
+# YouTube API
+google-api-python-client
+google-auth-oauthlib
+google-auth-httplib2
+
+# Utils
+python-slugify
