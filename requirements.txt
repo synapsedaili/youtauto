@@ -1,0 +1,17 @@
+# requirements.txt
+requests
+python-dotenv
+huggingface_hub
+transformers
+numpy
+torch==2.1.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+gtts
+piper-tts
+moviepy==1.0.3
+Pillow==9.5.0
+elevenlabs
+google-api-python-client
+google-auth-oauthlib
+google-auth-httplib2
+Pillow
+python-slugify
