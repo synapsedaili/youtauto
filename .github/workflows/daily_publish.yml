@@ -1,0 +1,110 @@
+name: 🌐 Daily Dual Publish (16:00 TR)
+
+on:
+  schedule:
+    - cron: '0 13 * * *'  # 13:00 UTC = 16:00 TR saati
+  workflow_dispatch:
+
+jobs:
+  # 📱 SHORTS: 1 dk video
+  create-and-upload-shorts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ffmpeg libgl1 libglib2.0-0 libsm6
+    
+    - name: Install Python dependencies
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Cache model files
+      uses: actions/cache@v3
+      with:
+        path: models/
+        key: model-cache-v1-${{ hashFiles('requirements.txt') }}
+        restore-keys: model-cache-v1-
+    
+    - name: Run shorts pipeline
+      run: python run_pipeline.py --mode shorts
+      env:
+        HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        YOUTUBE_CREDENTIALS: ${{ secrets.YOUTUBE_CREDENTIALS }}
+    
+    - name: Upload artifact (debug)
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: shorts-debug
+        path: temp/
+
+  # 🎙️ PODCAST: 15 dk video
+  create-and-upload-podcast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ffmpeg libgl1 libglib2.0-0 libsm6
+    
+    - name: Install Python dependencies
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Cache model files
+      uses: actions/cache@v3
+      with:
+        path: models/
+        key: model-cache-v1-${{ hashFiles('requirements.txt') }}
+        restore-keys: model-cache-v1-
+    
+    - name: Run podcast pipeline
+      run: python run_pipeline.py --mode podcast
+      env:
+        HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        YOUTUBE_CREDENTIALS: ${{ secrets.YOUTUBE_CREDENTIALS }}
+    
+    - name: Upload artifact (debug)
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: podcast-debug
+        path: temp/
+  
+  # 🔄 SIDEA.TXT GÜNCELLEME
+  update-sidea:
+    runs-on: ubuntu-latest
+    needs: [create-and-upload-podcast, create-and-upload-shorts]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Push sidea.txt update
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add data/sidea.txt
+          git commit -m "🔄 sidea.txt güncellendi: ${{ github.run_number }}" || echo "Değişiklik yok"
+          git push
