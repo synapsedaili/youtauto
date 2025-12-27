@@ -1,0 +1,35 @@
+name: 🌐 Daily Dual Publish
+
+on:
+  schedule:
+    - cron: '0 13 * * *'  # 16:00 TR saati
+  workflow_dispatch:
+
+jobs:
+  shorts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with: { python-version: '3.10' }
+      - run: sudo apt-get install -y ffmpeg libgl1
+      - run: pip install -r requirements.txt
+      - run: python run_pipeline.py --mode shorts
+        env:
+          YOUTUBE_CREDENTIALS: ${{ secrets.YOUTUBE_CREDENTIALS }}
+
+  podcast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with: { python-version: '3.10' }
+      - run: sudo apt-get install -y ffmpeg libgl1
+      - run: pip install -r requirements.txt
+      - run: python run_pipeline.py --mode podcast
+        env:
+          YOUTUBE_CREDENTIALS: ${{ secrets.YOUTUBE_CREDENTIALS }}
