@@ -1,0 +1,23 @@
+# requirements.txt
+requests
+python-dotenv
+huggingface_hub
+transformers
+numpy
+torch
+gtts
+piper-tts
+moviepy==1.0.3
+Pillow==9.5.0
+urllib3
+elevenlabs
+google-api-python-client
+google-auth-oauthlib
+google-auth-httplib2
+Pillow
+python-slugify
+pydub
+edge-tts
+replicate==0.26.0
+groq==0.9.0
+openai==1.45.0
