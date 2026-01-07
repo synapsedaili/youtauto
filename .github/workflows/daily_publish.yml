@@ -1,0 +1,41 @@
+name: 🌐 Daily Publish
+
+on:
+  schedule:
+    - cron: '0 12 * * *'  # 16:00 TR
+  workflow_dispatch:
+
+jobs:
+  shorts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg libgl1 libglib2.0-0 libsm6
+      - run: pip install -r requirements.txt
+      - run: python run_pipeline.py --mode shorts
+        env:
+          YOUTUBE_TOKEN_ENCODED: ${{ secrets.YOUTUBE_TOKEN_ENCODED }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+
+  podcast:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg libgl1 libglib2.0-0 libsm6
+      - run: pip install -r requirements.txt
+      - run: python run_pipeline.py --mode podcast
+        env:
+          YOUTUBE_TOKEN_ENCODED: ${{ secrets.YOUTUBE_TOKEN_ENCODED }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
