@@ -1,0 +1,68 @@
+name: 🌐 Daily Publish
+
+on:
+  schedule:
+    - cron: '45 11 * * *'  # 14:45 TR
+  workflow_dispatch:
+
+jobs:
+  setup-and-run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg libgl1 libglib2.0-0 libsm6 libxrender1 libxext6 libfontconfig1 libfreetype6
+
+      - name: Install ImageMagick (for TextClip)
+        run: |
+          sudo apt-get install -y imagemagick
+          convert -version
+
+      - name: Cleanup disk space
+        run: |
+          sudo apt-get clean
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android
+
+      - name: Install Ollama
+        run: |
+          curl -fsSL https://ollama.com/install.sh | sh
+          sudo systemctl enable ollama
+          sudo systemctl start ollama
+      
+      - name: Wait for Ollama API
+        run: timeout 60s bash -c 'until curl -f http://localhost:11434; do sleep 2; done'
+      
+      - name: Pull models AND TEST them
+        run: |
+          
+          ollama pull qwen2:0.5b-q4_K_M
+          ollama pull deepseek-r1:1.3b-q4_K_M
+          ollama pull llama3.2:1b-q4_K_M
+          
+          timeout 30s ollama run qwen2:0.5b-q4_K_M "test" || echo "qwen2 failed"
+          timeout 30s ollama run deepseek-r1:1.3b-q4_K_M "test" || echo "deepseek failed"
+          timeout 30s ollama run llama3.2:1b-q4_K_M "test" || echo "llama3.2 failed"
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Shorts Pipeline
+        run: python run_pipeline.py --mode shorts
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          YOUTUBE_TOKEN_ENCODED: ${{ secrets.YOUTUBE_TOKEN_ENCODED }}
+
+      - name: Run Podcast Pipeline
+        run: python run_pipeline.py --mode podcast
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          YOUTUBE_TOKEN_ENCODED: ${{ secrets.YOUTUBE_TOKEN_ENCODED }}
