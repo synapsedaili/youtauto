@@ -1,0 +1,90 @@
+name: Daily Publish
+on:
+  schedule:
+    - cron: '0 8 * * *'  # Günlük 8:00 UTC (Türkiye: 11:00)
+  workflow_dispatch:  # Manuel tetikleme
+
+env:
+  TZ: Europe/Istanbul  # Türkiye saati
+
+jobs:
+  publish-content:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120  # 2 saat timeout
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg imagemagick
+
+      - name: Install Python dependencies
+        run: |
+          pip install Pillow==9.5.0  # PIL ANTIALIAS fix
+          pip install moviepy==1.0.3  # MoviePy 1.0.3
+          pip install -r requirements.txt
+          pip install cryptography selenium
+
+      - name: Install Chrome
+        run: |
+          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      - name: Verify installation
+        run: |
+          python -c "from cryptography.fernet import Fernet; print('Cryptography OK')"
+          python -c "from selenium import webdriver; print('Selenium OK')"
+          ffmpeg -version
+          google-chrome --version
+
+      - name: Set up ChromeDriver
+        run: |
+          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
+          wget -O /tmp/chromedriver.zip "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$(echo $CHROME_VERSION | cut -d. -f1)/chromedriver_linux64.zip"
+          sudo unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/
+          sudo chmod +x /usr/local/bin/chromedriver
+
+      - name: Run complete pipeline
+        run: |
+          python run_pipeline.py --mode complete
+        env:
+          PYTHONPATH: .
+          QWEN_USER_ENC: ${{ secrets.QWEN_USER_ENC }}
+          QWEN_PASS_ENC: ${{ secrets.QWEN_PASS_ENC }}
+          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
+          YOUTUBE_TOKEN_ENCODED: ${{ secrets.YOUTUBE_TOKEN_ENCODED }}
+
+      - name: Cleanup temp files
+        if: always()
+        run: |
+          rm -rf temp/ || true
+          find . -name "*.mp4" -size +50M -delete || true
+          find . -name "*.png" -size +5M -delete || true
+
+      - name: Cache images
+        uses: actions/cache@v3
+        with:
+          path: |
+            data/images/**
+          key: images-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            images-${{ runner.os }}-
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: pipeline-logs
+          path: |
+            output/*.log
+            temp/*.log
