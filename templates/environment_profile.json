@@ -1,0 +1,14 @@
+{
+  "primary_location": {
+    "name": "Netherlands Urban Areas",
+    "time_period": "1970s",
+    "architecture_style": "Retro-futurism",
+    "color_palette": ["muted greens", "warm browns", "steel grays"],
+    "lighting": "Natural daylight, overcast skies"
+  },
+  "secondary_locations": {
+    "government_buildings": "Brutalist architecture",
+    "residential_areas": "Modern housing projects",
+    "public_spaces": "Urban planning showcases"
+  }
+}
