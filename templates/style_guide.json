@@ -1,0 +1,14 @@
+{
+  "visual_style": {
+    "keywords": ["cinematic", "documentary", "realistic", "vintage", "1970s"],
+    "camera_angles": ["wide shots", "medium shots", "establishing shots"],
+    "color_grading": "Warm, slightly desaturated",
+    "film_grain": "Light vintage film grain",
+    "aspect_ratio": "16:9"
+  },
+  "motion_style": {
+    "camera_movement": "Slow, deliberate pans and zooms",
+    "transition_style": "Crossfade, dissolve",
+    "pacing": "Calm, documentary rhythm"
+  }
+}
