@@ -1,0 +1,14 @@
+{
+  "main_character": {
+    "name": "Narrator",
+    "age_range": "30-50",
+    "gender": "unspecified",
+    "clothing_style": "1970s professional",
+    "appearance_notes": "Consistent throughout all scenes"
+  },
+  "supporting_characters": {
+    "architects": "1970s business attire",
+    "citizens": "Period-appropriate casual wear",
+    "officials": "Government uniforms of the era"
+  }
+}
