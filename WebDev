@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DailyPulse — Olay Arşivi & Blog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-card: #1a1a26;
+      --bg-card-hover: #222232;
+      --border: #2a2a3a;
+      --border-accent: #3a3a5a;
+      --text-primary: #e8e8f0;
+      --text-secondary: #9090a8;
+      --text-muted: #606078;
+      --accent: #6c5ce7;
+      --accent-light: #a29bfe;
+      --accent-glow: rgba(108, 92, 231, 0.3);
+      --success: #00b894;
+      --warning: #fdcb6e;
+      --danger: #e17055;
+      --gradient-1: linear-gradient(135deg, #6c5ce7, #a29bfe);
+      --gradient-2: linear-gradient(135deg, #0a0a0f, #1a1a26);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.4);
+      --shadow-lg: 0 8px 48px rgba(0,0,0,0.6);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Animated background */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(108,92,231,0.06) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(162,155,254,0.04) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .bg-grid::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(108,92,231,0.03) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(108,92,231,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 10, 15, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 42px;
+      height: 42px;
+      background: var(--gradient-1);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .logo-text {
+      font-size: 22px;
+      font-weight: 800;
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-badge {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 8px;
+      background: rgba(108,92,231,0.15);
+      color: var(--accent-light);
+      border-radius: 20px;
+      border: 1px solid rgba(108,92,231,0.3);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .header-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--success);
+      border-radius: 50%;
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0,184,148,0.4); }
+      50% { box-shadow: 0 0 0 6px rgba(0,184,148,0); }
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 80px 0 60px;
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      letter-spacing: -1px;
+    }
+
+    .hero h1 span {
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+
+    /* Search Bar */
+    .search-section {
+      max-width: 640px;
+      margin: 0 auto 24px;
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .search-bar:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .search-bar svg {
+      width: 20px;
+      height: 20px;
+      color: var(--text-muted);
+      margin: 0 12px 0 16px;
+      flex-shrink: 0;
+    }
+
+    .search-bar input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--text-primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      padding: 12px 0;
+    }
+
+    .search-bar input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .search-btn {
+      padding: 12px 24px;
+      background: var(--gradient-1);
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .search-btn:hover {
+      transform: scale(1.02);
+      box-shadow: 0 4px 16px var(--accent-glow);
+    }
+
+    /* Filter Tags */
+    .filters {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .filter-tag {
+      padding: 8px 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .filter-tag:hover {
+      border-color: var(--border-accent);
+      color: var(--text-primary);
+    }
+
+    .filter-tag.active {
+      background: rgba(108,92,231,0.15);
+      border-color: var(--accent);
+      color: var(--accent-light);
+    }
+
+    /* Stats Bar */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-2px);
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 800;
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Entries List */
+    .entries-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .entries-header h2 {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .entries-count {
+      font-size: 13px;
+      color: var(--text-muted);
+      background: var(--bg-card);
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+    }
+
+    .entry-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      margin-bottom: 16px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.5s ease forwards;
+    }
+
+    .entry-card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--gradient-1);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .entry-card:hover {
+      border-color: var(--border-accent);
+      background: var(--bg-card-hover);
+    }
+
+    .entry-card:hover::before {
+      opacity: 1;
+    }
+
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .entry-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .entry-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--accent-light);
+      background: rgba(108,92,231,0.1);
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .entry-source {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .entry-source svg { width: 14px; height: 14px; }
+
+    .entry-category {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cat-tech { background: rgba(0,184,148,0.1); color: var(--success); }
+    .cat-politics { background: rgba(225,112,85,0.1); color: var(--danger); }
+    .cat-economy { background: rgba(253,203,110,0.1); color: var(--warning); }
+    .cat-science { background: rgba(108,92,231,0.1); color: var(--accent-light); }
+    .cat-health { background: rgba(0,206,209,0.1); color: #00ced1; }
+
+    .entry-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .entry-excerpt {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .entry-tags {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .entry-tag {
+      font-size: 11px;
+      padding: 3px 10px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-muted);
+    }
+
+    .entry-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .action-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      color: var(--accent-light);
+      background: rgba(108,92,231,0.1);
+    }
+
+    .action-btn svg { width: 14px; height: 14px; }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 48px 0 80px;
+    }
+
+    .page-btn {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .page-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent-light);
+    }
+
+    .page-btn.active {
+      background: var(--gradient-1);
+      border-color: transparent;
+      color: white;
+    }
+
+    /* Detail Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      max-width: 720px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 40px;
+      position: relative;
+      animation: modalIn 0.3s ease;
+    }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.95) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .modal-close:hover {
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    .modal h2 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      margin-top: 8px;
+      line-height: 1.3;
+    }
+
+    .modal-content {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+    .modal-content p { margin-bottom: 16px; }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 80px 0;
+      display: none;
+    }
+
+    .empty-state svg {
+      width: 80px;
+      height: 80px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    .empty-state h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .empty-state p {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 0;
+      text-align: center;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-text {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 16px;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--accent-light); }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px 24px;
+      font-size: 14px;
+      color: var(--text-primary);
+      z-index: 2000;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--border-accent); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero { padding: 48px 0 32px; }
+      .hero h1 { font-size: 28px; }
+      .hero p { font-size: 15px; }
+      .entry-card { padding: 20px; }
+      .entry-title { font-size: 17px; }
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .modal { padding: 24px; }
+      .footer-inner { justify-content: center; text-align: center; }
+    }
+
+    /* Loading shimmer */
+    .shimmer {
+      background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-card-hover) 50%, var(--bg-card) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="header-inner">
+        <div class="logo">
+          <div class="logo-icon">⚡</div>
+          <div>
+            <div class="logo-text">DailyPulse</div>
+            <div class="logo-badge">Arşiv</div>
+          </div>
+        </div>
+        <div class="header-status">
+          <div class="status-dot"></div>
+          <span>GitHub Actions ile güncel</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <h1>Günlük Olaylar,<br><span>AI ile Derlenmiş</span></h1>
+      <p>Her gün otomatik olarak toplanan olaylar, AI tarafından özetlenir ve arşivlenir. Tarihle arayın, keşfedin.</p>
+
+      <!-- Search -->
+      <div class="search-section">
+        <div class="search-bar">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="searchInput" placeholder="Tarih girin — örn: 15/04/2026">
+          <button class="search-btn" onclick="searchEntries()">Ara</button>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="filters">
+        <div class="filter-tag active" onclick="filterBy('all', this)">Tümü</div>
+        <div class="filter-tag" onclick="filterBy('tech', this)">🔧 Teknoloji</div>
+        <div class="filter-tag" onclick="filterBy('economy', this)">💰 Ekonomi</div>
+        <div class="filter-tag" onclick="filterBy('politics', this)">🏛 Siyaset</div>
+        <div class="filter-tag" onclick="filterBy('science', this)">🔬 Bilim</div>
+        <div class="filter-tag" onclick="filterBy('health', this)">🏥 Sağlık</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="container">
+    <!-- Stats -->
+    <div class="stats-bar">
+      <div class="stat-card">
+        <div class="stat-value" id="totalEntries">128</div>
+        <div class="stat-label">Toplam Giriş</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="activeDays">47</div>
+        <div class="stat-label">Aktif Gün</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="categories">5</div>
+        <div class="stat-label">Kategori</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="lastUpdate">20/04</div>
+        <div class="stat-label">Son Güncelleme</div>
+      </div>
+    </div>
+
+    <!-- Entries Header -->
+    <div class="entries-header">
+      <h2>📋 Günlük Arşiv</h2>
+      <div class="entries-count" id="entriesCount">10 giriş gösteriliyor</div>
+    </div>
+
+    <!-- Entries Container -->
+    <div id="entriesContainer"></div>
+
+    <!-- Empty State -->
+    <div class="empty-state" id="emptyState">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      <h3>Sonuç bulunamadı</h3>
+      <p>Farklı bir tarih veya kategori deneyin.</p>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination" id="pagination"></div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-text">© 2026 DailyPulse — GitHub Actions ile otomatik derlenir.</div>
+        <div class="footer-links">
+          <a href="#">GitHub</a>
+          <a href="#">HuggingFace</a>
+          <a href="#">API</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Detail Modal -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+    <div class="modal" id="modalContent">
+      <button class="modal-close" onclick="closeModal()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // Mock Data
+    const mockData = [
+      {
+        id: 1,
+        date: '20/04/2026',
+        title: 'OpenAI, GPT-6\'nın Erken Erişim Programını Başlattı',
+        excerpt: 'OpenAI bugün GPT-6 modelinin geliştirici önizlemesini duyurdu. Yeni model, multimodal işleme kapasitesinde önemli iyileştirmeler sunuyor ve gerçek zamanlı video analiz yetenekleri içeriyor.',
+        content: 'OpenAI bugün GPT-6 modelinin geliştirici önizlemesini duyurdu. Yeni model, multimodal işleme kapasitesinde önemli iyileştirmeler sunuyor ve gerçek zamanlı video analiz yetenekleri içeriyor. Model, önceki sürümlere göre %40 daha az enerji tüketirken %300 daha yüksek doğruluk oranına sahip. Geliştiriciler artık API üzerinden karmaşık multi-step reasoning görevlerini tek bir istekle çalıştırabilecek. Ayrıca yeni "Code Interpreter v2" özelliği ile projelerin tamamını analiz edip refactor önerileri sunabiliyor.',
+        category: 'tech',
+        categoryLabel: 'Teknoloji',
+        source: 'TechCrunch',
+        tags: ['AI', 'OpenAI', 'GPT-6', 'Machine Learning'],
+        likes: 342,
+        shares: 89
+      },
+      {
+        id: 2,
+        date: '20/04/2026',
+        title: 'TCMB Faiz Kararını Açıkladı: Piyasalar Hareketlendi',
+        excerpt: 'Türkiye Cumhuriyet Merkez Bankası, politika faizini %42.5 seviyesinde sabit tutma kararı aldı. Karar sonrası döviz kurlarında dalgalanma yaşandı.',
+        content: 'Türkiye Cumhuriyet Merkez Bankası, Para Politikası Kurulu toplantısı sonrasında politika faizini %42.5 seviyesinde sabit tutma kararı aldı. Karar, piyasa beklentileriyle uyumlu gerçekleşti. TCMB Başkanı, enflasyonla mücadelede kararlı duruşun devam edeceğini belirtti. Karar sonrası USD/TRY kuru 36.80 seviyesinde dengelenirken, BIST 100 endeksi %1.2 değer kazandı. Ekonomistler, mayıs ayında sıkı para politikasının süreceğini öngörüyor.',
+        category: 'economy',
+        categoryLabel: 'Ekonomi',
+        source: 'Bloomberg HT',
+        tags: ['TCMB', 'Faiz', 'Ekonomi', 'Enflasyon'],
+        likes: 218,
+        shares: 56
+      },
+      {
+        id: 3,
+        date: '19/04/2026',
+        title: 'NASA, Mars Keşif Aracı Yeni Su İzleri Buldu',
+        excerpt: 'NASA\'nın Perseverance aracı, Jezero Krateri\'nde yeni hidrotermal mineral kalıntıları tespit etti. Bu bulgu, Mars\'ta geçmişte yaşam olabileceğine dair en güçlü kanıt olarak değerlendiriliyor.',
+        content: 'NASA\'nın Perseverance keşif aracı, Jezero Krateri\'nin kuzey bölgesinde yeni hidrotermal mineral kalıntıları tespit etti. Buluntular arasında karbonat zengini kayalar ve organik molekül izleri bulunuyor. Bu bulgu, Mars\'ta geçmişte yaşam olabileceğine dair en güçlü kanıt olarak değerlendiriliyor. NASA bilim ekibi, örneklerin 2028\'deki Mars Sample Return göreviyle Dünya\'ya getirilmesini planlıyor.',
+        category: 'science',
+        categoryLabel: 'Bilim',
+        source: 'Nature',
+        tags: ['NASA', 'Mars', 'Perseverance', 'Uzay'],
+        likes: 567,
+        shares: 134
+      },
+      {
+        id: 4,
+        date: '19/04/2026',
+        title: 'AB Yapay Zeka Düzenlemesi Tam Kapsamda Yürürlüğe Girdi',
+        excerpt: 'Avrupa Birliği\'nin AI Act düzenlemesi bugün tam kapsamda yürürlüğe girdi. Yüksek riskli AI sistemleri için zorunlu uygunluk değerlendirmesi başlıyor.',
+        content: 'Avrupa Birliği\'nin Yapay Zeka Yasası (AI Act) bugün tam kapsamda yürürlüğe girdi. Düzenleme, yüksek riskli AI sistemleri için zorunlu uygunluk değerlendirmesi, şeffaflık raporlaması ve temel haklar etk değerlendirmesi gerektiriyor. Yasaya uymayan şirketler, küresel cironun %7\'sine kadar ceza ile karşı karşıya kalabilir. Teknoloji devleri, uyum süreçlerini hızlandırdıklarını açıkladı.',
+        category: 'tech',
+        categoryLabel: 'Teknoloji',
+        source: 'Reuters',
+        tags: ['AB', 'AI Act', 'Regülasyon', 'Yapay Zeka'],
+        likes: 293,
+        shares: 78
+      },
+      {
+        id: 5,
+        date: '18/04/2026',
+        title: 'WHO: Yeni Nesil mRNA Aşısı Klinik Deneylerde Başarılı',
+        excerpt: 'Dünya Sağlık Örgütü, yeni nesil çoklu-pathogen mRNA aşısının Faz 3 klinik denemelerinde %94 etkililik oranına ulaştığını açıkladı.',
+        content: 'Dünya Sağlık Örgütü, yeni nesil çoklu-pathogen mRNA aşısının Faz 3 klinik denemelerinde %94 etkililik oranına ulaştığını açıkladı. Aşı, grip, COVID-19 ve RSV\'ye karşı tek dozda koruma sağlıyor. 45.000 katılımcılı çalışmada ciddi yan etki oranı %0.3 olarak kaydedildi. Aşının 2027\'de küresel dağıtımının başlaması hedefleniyor.',
+        category: 'health',
+        categoryLabel: 'Sağlık',
+        source: 'The Lancet',
+        tags: ['WHO', 'mRNA', 'Aşı', 'Klinik Deneme'],
+        likes: 412,
+        shares: 98
+      },
+      {
+        id: 6,
+        date: '18/04/2026',
+        title: 'Seçim Anketleri: Koalisyon Görüşmeleri Hız Kazandı',
+        excerpt: 'Son kamuoyu yoklamaları, parlamentoda çoğunluk sağlayacak koalisyon formüllerinin şekillendiğini gösteriyor. Ekonomi ve eğitim ana gündem maddeleri.',
+        content: 'Son kamuoyu yoklamaları, parlamentoda çoğunluk sağlayacak koalisyon formüllerinin şekillendiğini gösteriyor. Partiler arasında yapılan görüşmelerde ekonomi politikaları, eğitim reformu ve dış politika yaklaşımları masaya yatırılıyor. Siyaset bilimciler, koalisyon anlaşmasının mayıs ayı ortasına kadar tamamlanabileceğini öngörüyor. Piyasalar, siyasi istikrar sinyaliyle pozitif tepki verdi.',
+        category: 'politics',
+        categoryLabel: 'Siyaset',
+        source: 'BBC Türkçe',
+        tags: ['Seçim', 'Koalisyon', 'Anket', 'Siyaset'],
+        likes: 186,
+        shares: 45
+      },
+      {
+        id: 7,
+        date: '17/04/2026',
+        title: 'Bitcoin ATH Kırdı: $142,000 Seviyesi Aşıldı',
+        excerpt: 'Bitcoin, kurumsal talep ve ETF akışlarının artmasıyla birlikte yeni bir tüm zamanların en yüksek rekoru kırdı.',
+        content: 'Bitcoin, kurumsal talep ve spot ETF akışlarının artmasıyla birlikte $142,000 seviyesini aşarak yeni bir tüm zamanların en yüksek rekoru kırdı. BlackRock\'un Bitcoin ETF\'i son bir ayda 3.2 milyar dolar net giriş kaydetti. Analistler,减半 sonrası arz şokunun etkilerinin devam ettiğini ve kurumsal adaptasyonun hızlandığını belirtiyor. Kripto piyasasının toplam piyasa değeri $6.8 trilyona ulaştı.',
+        category: 'economy',
+        categoryLabel: 'Ekonomi',
+        source: 'CoinDesk',
+        tags: ['Bitcoin', 'Kripto', 'ETF', 'ATH'],
+        likes: 634,
+        shares: 201
+      },
+      {
+        id: 8,
+        date: '17/04/2026',
+        title: 'Quantum Computing: IBM 2000 Kübitlik İşlemci Tanıttı',
+        excerpt: 'IBM, 2000 kübitlik kuantum işlemcisini tanıtarak hata düzeltme alanında önemli bir eşik aştığını duyurdu.',
+        content: 'IBM, yeni nesil "Condor-X" kuantum işlemcisini tanıtarak 2000 kübitlik kapasiteye ulaştığını duyurdu. Yeni işlemci, mantıksal kübitlerde hata oranını %99.9\'a düşüren yeni hata düzeltme protokolü kullanıyor. Araştırmacılar, bu gelişmenin ilaç keşfi, malzeme bilimi ve optimizasyon problemlerinde çığır açacağını belirtiyor. IBM, kuantum bulut platformuna erişimi 2026 sonuna kadar genişletecek.',
+        category: 'tech',
+        categoryLabel: 'Teknoloji',
+        source: 'MIT Tech Review',
+        tags: ['IBM', 'Quantum', 'Kuantum Bilgisayar', 'Kübit'],
+        likes: 445,
+        shares: 112
+      },
+      {
+        id: 9,
+        date: '16/04/2026',
+        title: 'İklim Raporu: 2025 En Sıcak Yıl Olarak Kayıtlara Geçti',
+        excerpt: 'Copernicus İklim Değişikliği Servisi, 2025\'in kayıtlardaki en sıcak yıl olduğunu doğruladı. Küresel sıcaklık artışı 1.5°C eşik değerini aştı.',
+        content: 'Copernicus İklim Değişikliği Servisi\'nin yıllık raporuna göre, 2025 küresel ortalama sıcaklığı sanayi öncesi döneme göre 1.58°C artışla kayıtlardaki en sıcak yıl oldu. Okyanus sıcaklıkları da rekor seviyelere ulaştı. Bilim insanları, bu eğilimin devam etmesi durumunda 2030\'a kadar 1.7°C\'ye ulaşılacağı uyarısında bulunuyor. BM, acil karbon emisyon azaltımı çağrısını yineledi.',
+        category: 'science',
+        categoryLabel: 'Bilim',
+        source: 'Copernicus',
+        tags: ['İklim', 'Global Warming', 'Copernicus', 'Çevre'],
+        likes: 378,
+        shares: 156
+      },
+      {
+        id: 10,
+        date: '16/04/2026',
+        title: 'Tesla, Otonom Robotaksi Servisini 5 Şehirde Başlattı',
+        excerpt: 'Tesla, tam otonom robotaksi servisini San Francisco, Austin, Miami, Berlin ve Singapur\'da hizmete sundu. İlk ay ücretsiz deneme sunuluyor.',
+        content: 'Tesla, Full Self-Driving (FSD) v14 tabanlı otonom robotaksi servisini 5 büyük şehirde başlattı. Araçlar, sürücüsüz olarak yolcu alıyor ve belirlenmiş noktalar arasında seyahat ediyor. İlk ay ücretsiz deneme sunulacak. Tesla CEO\'su, 2027 sonuna kadar 100 şehirde hizmet vermeyi hedeflediklerini açıkladı. Düzenleyici onay süreci hızla ilerliyor ve ABD ile AB\'de yeni otonom araç standartları hazırlanıyor.',
+        category: 'tech',
+        categoryLabel: 'Teknoloji',
+        source: 'The Verge',
+        tags: ['Tesla', 'Otonom', 'Robotaksi', 'FSD'],
+        likes: 521,
+        shares: 143
+      }
+    ];
+
+    // State
+    let currentFilter = 'all';
+    let currentPage = 1;
+    const perPage = 5;
+
+    // Render entries
+    function renderEntries() {
+      const container = document.getElementById('entriesContainer');
+      const searchTerm = document.getElementById('searchInput').value.trim();
+      
+      let filtered = mockData;
+
+      if (currentFilter !== 'all') {
+        filtered = filtered.filter(e => e.category === currentFilter);
+      }
+
+      if (searchTerm) {
+        const parts = searchTerm.split('/');
+        if (parts.length === 3) {
+          const formatted = `${parts[0].padStart(2,'0')}/${parts[1].padStart(2,'0')}/${parts[2]}`;
+          filtered = filtered.filter(e => e.date === formatted);
+        } else {
+          filtered = filtered.filter(e => 
+            e.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            e.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            e.date.includes(searchTerm)
+          );
+        }
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = '';
+        document.getElementById('emptyState').style.display = 'block';
+        document.getElementById('entriesCount').textContent = '0 giriş';
+        document.getElementById('pagination').innerHTML = '';
+        return;
+      }
+
+      document.getElementById('emptyState').style.display = 'none';
+
+      const totalPages = Math.ceil(filtered.length / perPage);
+      const start = (currentPage - 1) * perPage;
+      const paged = filtered.slice(start, start + perPage);
+
+      document.getElementById('entriesCount').textContent = `${filtered.length} giriş bulundu`;
+
+      container.innerHTML = paged.map((entry, idx) => `
+        <div class="entry-card" style="animation-delay: ${idx * 0.08}s" onclick="openModal(${entry.id})">
+          <div class="entry-meta">
+            <span class="entry-date">${entry.date}</span>
+            <span class="entry-source">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+              ${entry.source}
+            </span>
+            <span class="entry-category cat-${entry.category}">${entry.categoryLabel}</span>
+          </div>
+          <h3 class="entry-title">${entry.title}</h3>
+          <p class="entry-excerpt">${entry.excerpt}</p>
+          <div class="entry-tags">
+            ${entry.tags.map(t => `<span class="entry-tag">#${t}</span>`).join('')}
+          </div>
+          <div class="entry-actions">
+            <button class="action-btn" onclick="event.stopPropagation(); likeEntry(${entry.id})">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+              ${entry.likes}
+            </button>
+            <button class="action-btn" onclick="event.stopPropagation(); shareEntry(${entry.id})">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+              ${entry.shares}
+            </button>
+            <button class="action-btn" onclick="event.stopPropagation(); copyEntry(${entry.id})">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              Kopyala
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      // Pagination
+      const paginationEl = document.getElementById('pagination');
+      if (totalPages <= 1) {
+        paginationEl.innerHTML = '';
+        return;
+      }
+
+      let pagHTML = '';
+      for (let i = 1; i <= totalPages; i++) {
+        pagHTML += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
+      }
+      paginationEl.innerHTML = pagHTML;
+    }
+
+    // Search
+    function searchEntries() {
+      currentPage = 1;
+      renderEntries();
+    }
+
+    document.getElementById('searchInput').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') searchEntries();
+    });
+
+    // Filter
+    function filterBy(category, el) {
+      currentFilter = category;
+      currentPage = 1;
+      document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      renderEntries();
+    }
+
+    // Pagination
+    function goToPage(page) {
+      currentPage = page;
+      renderEntries();
+      window.scrollTo({ top: 400, behavior: 'smooth' });
+    }
+
+    // Modal
+    function openModal(id) {
+      const entry = mockData.find(e => e.id === id);
+      if (!entry) return;
+
+      document.getElementById('modalBody').innerHTML = `
+        <div class="entry-meta" style="margin-bottom:20px">
+          <span class="entry-date">${entry.date}</span>
+          <span class="entry-category cat-${entry.category}">${entry.categoryLabel}</span>
+          <span class="entry-source">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+            ${entry.source}
+          </span>
+        </div>
+        <h2>${entry.title}</h2>
+        <div class="modal-content">
+          ${entry.content.split('\n').map(p => p.trim() ? `<p>${p}</p>` : '').join('')}
+        </div>
+        <div class="entry-tags" style="margin-top:24px">
+          ${entry.tags.map(t => `<span class="entry-tag">#${t}</span>`).join('')}
+        </div>
+      `;
+
+      document.getElementById('modalOverlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(e) {
+      if (e && e.target !== document.getElementById('modalOverlay') && e.target.closest('.modal-close')) {
+        // direct close
+      }
+      document.getElementById('modalOverlay').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // Actions
+    function likeEntry(id) {
+      const entry = mockData.find(e => e.id === id);
+      if (entry) {
+        entry.likes++;
+        renderEntries();
+        showToast('❤️ Beğenildi!');
+      }
+    }
+
+    function shareEntry(id) {
+      const entry = mockData.find(e => e.id === id);
+      if (entry) {
+        entry.shares++;
+        renderEntries();
+        showToast('🔗 Paylaşım linki kopyalandı!');
+      }
+    }
+
+    function copyEntry(id) {
+      const entry = mockData.find(e => e.id === id);
+      if (entry) {
+        navigator.clipboard.writeText(entry.excerpt).then(() => {
+          showToast('📋 Panoya kopyalandı!');
+        }).catch(() => {
+          showToast('❌ Kopyalanamadı');
+        });
+      }
+    }
+
+    // Toast
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    // Init
+    renderEntries();
+  </script>
+</body>
+</html>
+
